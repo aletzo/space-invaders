@@ -22,7 +22,7 @@ cities,
 
 endGame,
 
-citiesY,
+citiesLimit,
 maxAliensY;
 
 /**
@@ -148,7 +148,7 @@ function init() {
 
 	cities.init(); // initiate the cities
 
-	citiesY = cities.y;
+	citiesLimit = cities.y;
 
 	// create and populate alien array
 	aliens = [];
@@ -361,7 +361,7 @@ function update() {
 			}
 		}
 
-		if (maxAliensY >= citiesY) {
+		if (maxAliensY >= citiesLimit) {
 		    endGameLose();
 		}
 	}
