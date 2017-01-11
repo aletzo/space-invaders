@@ -22,7 +22,8 @@ cities,
 
 endGame,
 
-distanceToCities;
+citiesY,
+maxAliensY;
 
 /**
  * Initiate and start the game
@@ -63,7 +64,7 @@ function init() {
 
     endGame = false;
 
-	distanceToCities = 0;
+	maxAliensY = 0;
 
 	dir = 1;
 
@@ -146,6 +147,8 @@ function init() {
 	};
 
 	cities.init(); // initiate the cities
+
+	citiesY = cities.y;
 
 	// create and populate alien array
 	aliens = [];
@@ -327,6 +330,7 @@ function update() {
 		bullets.push(newBullet);
 	}
 
+
 	// update the aliens at the current movement frequency
 	if (frames % lvFrame === 0) {
 		spFrame = (spFrame + 1) % 2;
@@ -350,7 +354,15 @@ function update() {
 			for (var i = 0, len = aliens.length; i < len; i++) {
 				aliens[i].x += 30 * dir;
 				aliens[i].y += 30;
+
+			    if (aliens[i].y > maxAliensY) {
+			        maxAliensY = aliens[i].y;
+			    }
 			}
+		}
+
+		if (maxAliensY >= citiesY) {
+		    endGameLose();
 		}
 	}
 };
@@ -362,8 +374,8 @@ function render() {
 	game.clear(); // clear the game canvas
 
     if (endGame) {
-        aliens = [];
-        bullets = [];
+        //aliens = [];
+        //bullets = [];
     }
 
 	// draw all aliens
@@ -371,11 +383,13 @@ function render() {
 		var a = aliens[i];
 		game.drawSprite(a.sprite[spFrame], a.x, a.y);
 	}
-	// save contetx and draw bullet then restore
+	// save context and draw bullet then restore
 	game.ctx.save();
+
 	for (var i = 0, len = bullets.length; i < len; i++) {
 		game.drawBullet(bullets[i]);
 	}
+
 	game.ctx.restore();
 	// draw the city graphics to the canvas
 	game.ctx.drawImage(cities.canvas, 0, cities.y);
