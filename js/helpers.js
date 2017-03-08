@@ -126,14 +126,33 @@ Game.prototype.drawSprite = function(sp, x, y) {
  * @param  {Bullet} bullet the bullet to draw
  */
 Game.prototype.drawBullet = function(bullet) {
-	// set the current fillstyle and draw bullet
-	this.ctx.fillStyle = bullet.color;
-	this.ctx.fillRect(
-	    bullet.x,
-	    bullet.y,
-	    bullet.width,
-	    bullet.height
-	);
+
+    this.ctx.font = "11pt Sans-Serif";
+    this.ctx.strokeStyle = "#fff";
+    this.ctx.lineWidth = 0.1;
+
+    this.ctx.save();
+    this.ctx.translate(bullet.x, bullet.y);
+    this.ctx.rotate(-Math.PI/2);
+
+    var text = (bullet.from == 'tank')
+               ? 'pull request'
+               : 'deadline';
+
+    this.ctx.textAlign = (bullet.from == 'tank')
+                         ? 'right'
+                         : 'left';
+
+    this.ctx.fillStyle = '#fff';
+
+    this.ctx.fillText(
+        text,
+        0,
+        0
+    );
+
+    this.ctx.restore();
+
 };
 
 

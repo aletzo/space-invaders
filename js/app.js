@@ -71,7 +71,7 @@ function init() {
 
 		x: (game.width - 100) / 2,
 		y: game.height - 30,
-		w: 100,
+		w: 80,
 		h: 20,
 
 		init: function() {
@@ -79,9 +79,6 @@ function init() {
 			this.canvas.width = this.w;
 			this.canvas.height = this.h;
 			this.ctx = this.canvas.getContext("2d");
-
-            this.ctx.beginPath();
-
 
             this.ctx.font = "11pt Sans-Serif";
             this.ctx.strokeStyle = "#fff";
@@ -130,9 +127,6 @@ function init() {
 			this.canvas.width = game.width;
 			this.canvas.height = this.h;
 			this.ctx = this.canvas.getContext("2d");
-
-            this.ctx.beginPath();
-
 
             this.ctx.font = "18pt Sans-Serif";
             this.ctx.strokeStyle = "#fff";
@@ -252,11 +246,11 @@ function update() {
 	// pressed
 	if (input.isPressed(32)) { // Space
 		var newBullet = new Bullet(
-		    tank.x + 10,
+		    tank.x + tank.w / 2,
 		    tank.y,
-		    -8,
+		    -4,
 		    2,
-		    6,
+		    4,
 		    '#fff',
 		    'tank'
 		);
@@ -352,7 +346,7 @@ function update() {
 		}
 	}
 	// makes the alien shoot in an random fashion 
-	if (Math.random() < 0.03 && aliens.length > 0) {
+	if (Math.random() < 0.01 && aliens.length > 0) {
 		var a = aliens[Math.round(Math.random() * (aliens.length - 1))];
 		// iterate through aliens and check collision to make
 		// sure only shoot from front line
@@ -367,7 +361,7 @@ function update() {
 		var newBullet = new Bullet(
 		    a.x + a.w*0.5,
 		    a.y + a.h,
-		    4,
+		    2,
 		    2,
 		    4,
 		    '#ff0000',
