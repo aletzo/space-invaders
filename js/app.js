@@ -11,8 +11,6 @@ spFrame,
 lvFrame,
 
 alSprite,
-taSprite,
-ciSprite,
 
 aliens,
 dir,
@@ -42,8 +40,6 @@ function main() {
 			[new Sprite(this, 22, 0, 16, 16), new Sprite(this, 22, 16, 16, 16)],
 			[new Sprite(this, 38, 0, 24, 16), new Sprite(this, 38, 16, 24, 16)]
 		];
-		taSprite = new Sprite(this, 62, 0, 22, 16);
-		ciSprite = new Sprite(this, 84, 8, 36, 24);
 
 		// initate and run the game
 		init();
@@ -70,10 +66,47 @@ function init() {
 
 	// create the tank object
 	tank = {
-		sprite: taSprite,
-		x: (game.width - taSprite.w) / 2,
-		y: game.height - (30 + taSprite.h)
+		canvas: null,
+		ctx: 	null,
+
+		x: (game.width - 100) / 2,
+		y: game.height - 30,
+		w: 100,
+		h: 20,
+
+		init: function() {
+			this.canvas = document.createElement("canvas");
+			this.canvas.width = this.w;
+			this.canvas.height = this.h;
+			this.ctx = this.canvas.getContext("2d");
+
+            this.ctx.beginPath();
+
+
+            this.ctx.font = "11pt Sans-Serif";
+            this.ctx.strokeStyle = "#fff";
+            this.ctx.lineWidth = 0.1;
+            
+            this.ctx.fillStyle = "#ffcc00";
+            this.ctx.fillRect(
+                this.x,
+                this.y,
+                this.w,
+                this.h
+            );
+                
+
+            this.ctx.fillStyle = "#fff";
+            this.ctx.fillText(
+                "developer",
+                0,
+                13
+            );
+		}
 	};
+
+	tank.init();
+
 
 	// initatie bullet array
 	bullets = [];
@@ -83,8 +116,10 @@ function init() {
 		canvas: null,
 		ctx: 	null,
 
-		y: tank.y - (30 + ciSprite.h),
-		h: ciSprite.h,
+		y: tank.y - 50,
+		w: 70,
+		h: 22,
+
 
 		/**
 		 * Create canvas and game graphic context
@@ -96,11 +131,23 @@ function init() {
 			this.canvas.height = this.h;
 			this.ctx = this.canvas.getContext("2d");
 
-			for (var i = 0; i < 4; i++) {
-				this.ctx.drawImage(ciSprite.img, ciSprite.x, ciSprite.y,
-					ciSprite.w, ciSprite.h,
-					68 + 111*i, 0, ciSprite.w, ciSprite.h);
-			}
+            this.ctx.beginPath();
+
+
+            this.ctx.font = "18pt Sans-Serif";
+            this.ctx.strokeStyle = "#fff";
+            this.ctx.lineWidth = 0.1;
+
+            for (var i = 0; i < 4; i++) {
+                //this.ctx.fillStyle = "#ffcc00";
+                //this.ctx.strokeRect(30, 0 + (i * 50), 50, 50);
+                this.ctx.fillStyle = "#fff";
+                this.ctx.fillText(
+                    "code",
+                    this.w + (i * 90),
+                    this.h - 5
+                );
+            }
 		},
 
 		/**
@@ -199,7 +246,7 @@ function update() {
 		tank.x += 4;
 	}
 	// keep the tank sprite inside of the canvas
-	tank.x = Math.max(Math.min(tank.x, game.width - (30 + taSprite.w)), 30);
+	tank.x = Math.max(Math.min(tank.x, game.width - tank.w), 30);
 
 	// append new bullet to the bullet array if spacebar is
 	// pressed
@@ -291,8 +338,8 @@ function update() {
 		        b.height,
 		        tank.x,
 		        tank.y,
-		        tank.sprite.w,
-		        tank.sprite.h
+		        tank.w,
+		        tank.h
 		    )
 
 		    if (collision) {
@@ -391,10 +438,20 @@ function render() {
 	}
 
 	game.ctx.restore();
+
 	// draw the city graphics to the canvas
-	game.ctx.drawImage(cities.canvas, 0, cities.y);
+	game.ctx.drawImage(
+	    cities.canvas,
+	    0,
+	    cities.y
+	);
+
 	// draw the tank sprite
-	game.drawSprite(tank.sprite, tank.x, tank.y);
+	game.ctx.drawImage(
+	    tank.canvas,
+	    tank.x,
+	    tank.y
+	);
 };
 
 // start and run the game
